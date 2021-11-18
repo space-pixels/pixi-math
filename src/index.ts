@@ -12,6 +12,7 @@ export * from './Matrix'
 export * from './ObservablePoint'
 export * from './Point'
 export * from './Transform'
+export * from './util'
 export { Circle }
 export { Ellipse }
 export { Polygon }

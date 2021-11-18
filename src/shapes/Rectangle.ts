@@ -1,4 +1,5 @@
 import { SHAPES } from '../const'
+import { Point } from '../Point'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface Rectangle extends GlobalMixins.Rectangle { }
@@ -20,6 +21,10 @@ export interface Rectangle extends GlobalMixins.Rectangle { }
  * @memberof PIXI
  */
 export class Rectangle {
+  static from = ({ x, y }: Point, width: number, height: number) => {
+    return new Rectangle(x, y, width, height)
+  }
+
   public x: number
   public y: number
   public width: number
@@ -252,5 +257,48 @@ export class Rectangle {
     this.height = y2 - y1
 
     return this
+  }
+
+  translate({ x, y }: Point): Rectangle {
+    return this.translateXY(x, y)
+  }
+
+  translateXY(x: number, y: number): Rectangle {
+    return new Rectangle(this.x + x, this.y + y, this.width, this.height)
+  }
+
+  rotate(angle: number) {
+    const position = this.start().rotate(angle).round()
+    const { x, y } = this.size().rotate(angle).round()
+    return Rectangle.from(position, x, y)
+  }
+
+  start(): Point {
+    return new Point(this.x, this.y)
+  }
+
+  end(inclusive = false): Point {
+    return this.start().addXY(this.width - (inclusive ? 1 : 0), this.height - (inclusive ? 1 : 0))
+  }
+
+  center(): Point {
+    return this.start().addXY(this.width / 2, this.height / 2)
+  }
+
+  size(): Point {
+    return new Point(this.width, this.height)
+  }
+
+  area(): number {
+    return this.width * this.height
+  }
+
+  getSides(bounds: Rectangle): [Rectangle, Rectangle, Rectangle, Rectangle] {
+    return [
+      new Rectangle(this.x, 0, this.width, this.y),
+      new Rectangle(this.x + this.width, this.y, bounds.width - this.x - this.width, this.height),
+      new Rectangle(this.x, this.y + this.height, this.width, bounds.height - this.y - this.height),
+      new Rectangle(0, this.y, this.x, this.height)
+    ]
   }
 }

@@ -1,15 +1,20 @@
+import { Circle as PlanckCircle } from 'planck'
+import { Point } from '../Point'
 import { SHAPES } from './../const'
 import { Rectangle } from './Rectangle'
 
-export class Circle {
-  /** @default 0 */
-  public x: number
+export class Circle extends PlanckCircle {
+  static withRadius(radius: number) { return new Circle(0, 0, radius) }
+  static unit() { return new Circle(0, 0, 1) }
 
   /** @default 0 */
-  public y: number
+  public get x() { return this.getCenter().x }
+
+  /** @default 0 */
+  public get y() { return this.getCenter().y }
 
   /** @default 1 */
-  public radius: number
+  get radius() { return this.getRadius() }
 
   /**
    * The type of the object, mainly used to avoid `instanceof` checks
@@ -17,7 +22,7 @@ export class Circle {
    * @default PIXI.SHAPES.CIRC
    * @see PIXI.SHAPES
    */
-  public readonly type: SHAPES.CIRC
+  public get type() { return SHAPES.CIRC }
 
   /**
    * @param x - The X coordinate of the center of this circle
@@ -25,11 +30,7 @@ export class Circle {
    * @param radius - The radius of the circle
    */
   constructor(x = 0, y = 0, radius = 0) {
-    this.x = x
-    this.y = y
-    this.radius = radius
-
-    this.type = SHAPES.CIRC
+    super(Point.from({ x, y }), radius)
   }
 
   /**

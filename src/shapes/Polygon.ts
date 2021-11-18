@@ -1,5 +1,8 @@
+import { Polygon as PlanckPolygon } from 'planck'
 import { SHAPES } from '../const'
 import type { IPointData } from '../IPointData'
+import { Matrix } from '../Matrix'
+import { Point } from '../Point'
 
 /**
  * A class to define a shape via user defined coordinates.
@@ -7,7 +10,12 @@ import type { IPointData } from '../IPointData'
  * @class
  * @memberof PIXI
  */
-export class Polygon {
+export class Polygon extends PlanckPolygon {
+  static from = (input: PlanckPolygon) => {
+    const points = input.m_vertices.map((vec) => Point.from(vec))
+    return new Polygon(points)
+  }
+
   public points: number[]
   public closeStroke: boolean
   public readonly type: SHAPES.POLY
@@ -22,6 +30,7 @@ export class Polygon {
    *  x,y values e.g. `new Polygon(x,y, x,y, x,y, ...)` where `x` and `y` are Numbers.
    */
   constructor(...points: any[]) {
+    super(Array.isArray(points[0]) ? points[0] : points)
     let flat: IPointData[] | number[] = Array.isArray(points[0]) ? points[0] : points
 
     // if this is an array of points, convert it to a flat array of numbers
@@ -68,9 +77,7 @@ export class Polygon {
   clone(): Polygon {
     const points = this.points.slice()
     const polygon = new Polygon(points)
-
     polygon.closeStroke = this.closeStroke
-
     return polygon
   }
 
@@ -101,5 +108,38 @@ export class Polygon {
     }
 
     return inside
+  }
+
+  getPoints() {
+    return Array(this.points.length / 2).fill(null).map((_, index) => {
+      return new Point(this.points[index * 2], this.points[index * 2 + 1])
+    })
+  }
+
+  sub(value: Point = Point.zero()) {
+    const points = this.getPoints().map((point) => point.sub(value))
+    return new Polygon(points)
+  }
+
+  rotate(angle: number) {
+    return new Polygon(this.getPoints().map((point) => point.rotate(angle)))
+  }
+
+  translate(offset: Point) {
+    return new Polygon(this.getPoints().map((point) => point.add(offset)))
+  }
+
+  transform({ a, b, c, d, tx, ty }: Matrix) {
+    return new Polygon(this.getPoints().map(({ x, y }) => {
+      return new Point(x * a + y * c + tx, x * b + y * d + ty)
+    }))
+  }
+
+  scale(scale: number) {
+    return new Polygon(this.getPoints().map((point) => point.mult(scale)))
+  }
+
+  flip() {
+    return new Polygon(this.getPoints().map(({ x, y }) => new Point(y, x)))
   }
 }
