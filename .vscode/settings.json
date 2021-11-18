@@ -13,7 +13,6 @@
     "**/.git": true,
     "**/.cache": true,
     "**/node_modules": true,
-    "**/build": true,
     "**/*.log": true
   },
   "files.insertFinalNewline": true,
