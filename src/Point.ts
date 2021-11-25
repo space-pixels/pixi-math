@@ -137,7 +137,7 @@ export class Point extends Vec2 implements IPoint {
   rotate(angle: number) {
     const cos = Math.cos(angle)
     const sin = Math.sin(angle)
-    return new Point(cos * this.x + sin * this.y, cos * this.y - sin * this.x)
+    return new Point(this.x * cos - this.y * sin, this.x * sin + this.y * cos)
   }
 
   angle() {

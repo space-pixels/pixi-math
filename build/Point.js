@@ -103,7 +103,7 @@ class Point extends planck_1.Vec2 {
     rotate(angle) {
         const cos = Math.cos(angle);
         const sin = Math.sin(angle);
-        return new Point(cos * this.x + sin * this.y, cos * this.y - sin * this.x);
+        return new Point(this.x * cos - this.y * sin, this.x * sin + this.y * cos);
     }
     angle() {
         return Math.atan2(this.y, this.x);
