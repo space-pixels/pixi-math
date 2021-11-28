@@ -1,6 +1,6 @@
 {
   "name": "@pixi/math",
-  "version": "6.1.4",
+  "version": "6.1.5",
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "description": "Collection of math utilities",

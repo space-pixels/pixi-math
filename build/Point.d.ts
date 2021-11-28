@@ -66,6 +66,7 @@ export declare class Point extends Vec2 implements IPoint {
     mult(value: number | Point): Point;
     multXY(x: number, y: number): Point;
     distanceTo({ x, y }: Point): number;
+    distanceSquaredTo({ x, y }: Point): number;
     unit(): Point;
     rotate(angle: number): Point;
     angle(): number;

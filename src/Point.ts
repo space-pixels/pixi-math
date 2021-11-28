@@ -129,6 +129,10 @@ export class Point extends Vec2 implements IPoint {
     return Math.sqrt(Math.pow(x - this.x, 2) + Math.pow(y - this.y, 2))
   }
 
+  distanceSquaredTo({ x, y }: Point) {
+    return Math.pow(x - this.x, 2) + Math.pow(y - this.y, 2)
+  }
+
   unit() {
     const angle = Math.atan2(this.y, this.x)
     return Point.unit().rotate(angle)
@@ -184,8 +188,3 @@ export class Point extends Vec2 implements IPoint {
 export interface Point {
   clone(): Point
 }
-
-// const p = new Point()
-// p.sub()
-// new Point.distance()
-// new Point().normalize

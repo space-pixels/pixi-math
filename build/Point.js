@@ -96,6 +96,9 @@ class Point extends planck_1.Vec2 {
     distanceTo({ x, y }) {
         return Math.sqrt(Math.pow(x - this.x, 2) + Math.pow(y - this.y, 2));
     }
+    distanceSquaredTo({ x, y }) {
+        return Math.pow(x - this.x, 2) + Math.pow(y - this.y, 2);
+    }
     unit() {
         const angle = Math.atan2(this.y, this.x);
         return Point.unit().rotate(angle);
@@ -138,8 +141,4 @@ class Point extends planck_1.Vec2 {
     }
 }
 exports.Point = Point;
-// const p = new Point()
-// p.sub()
-// new Point.distance()
-// new Point().normalize
 //# sourceMappingURL=Point.js.map
